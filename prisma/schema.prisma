@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id          Int        @id @default(autoincrement())
+  email       String     @unique
+  password    String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  schoolId    Int?
+  school      schools?   @relation(fields: [schoolId], references: [id])
+  officeId    Int?
+  office      offices?   @relation(fields: [officeId], references: [id])
+  role        String?
+  designation String? //SDO - Imus City or School Imus City
+  positionId  Int?
+  position    positions? @relation(fields: [positionId], references: [id])
+
+  @@map("users")
+}
+
+model schools {
+  id            Int           @id @default(autoincrement())
+  name          String
+  address       String?
+  schoolId      String?       @unique
+  designationId Int?
+  designation   designations? @relation(fields: [designationId], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  users         users[]
+  positions     positions[]
+
+  @@map("schools")
+}
+
+model offices {
+  id            Int           @id @default(autoincrement())
+  name          String
+  designationId Int?
+  designation   designations? @relation(fields: [designationId], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  users         users[]
+
+  @@map("offices")
+}
+
+model positions {
+  id            Int           @id @default(autoincrement())
+  name          String
+  designationId Int?
+  designation   designations? @relation(fields: [designationId], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  users         users[]
+  schools       schools?      @relation(fields: [schoolsId], references: [id])
+  schoolsId     Int?
+
+  @@map("positions")
+}
+
+model designations {
+  id        Int         @id @default(autoincrement())
+  name      String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  positions positions[]
+  schools   schools[]
+  offices   offices[]
+
+  @@map("designations")
+}

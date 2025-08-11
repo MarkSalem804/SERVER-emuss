@@ -1,0 +1,36 @@
+{
+  "name": "server-emuss",
+  "version": "1.0.0",
+  "description": "Medical/Dental System Server Side",
+  "homepage": "https://github.com/MarkSalem804/SERVER-emuss#readme",
+  "bugs": {
+    "url": "https://github.com/MarkSalem804/SERVER-emuss/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarkSalem804/SERVER-emuss.git"
+  },
+  "license": "ISC",
+  "author": "Mark Salem/Mabini College OJTs",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.13.0",
+    "bcrypt": "^6.0.0",
+    "clear": "^0.1.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "prisma": "^6.13.0",
+    "bcryptjs": "^3.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
