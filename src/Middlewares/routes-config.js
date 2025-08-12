@@ -31,6 +31,8 @@ const Routes = (app) => {
         users: {
           login: "/api/users/login",
           register: "/api/users/register",
+         update :"/api/users/:id",
+         delete:"/api/users/:id",
         },
       },
       timestamp: new Date().toISOString(),

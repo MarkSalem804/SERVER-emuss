@@ -56,7 +56,84 @@ async function registerUser(userData) {
   }
 }
 
+async function deleteUser(userId) {
+  try {
+    // Validate userId
+    if (!userId) {
+      throw new Error("User ID is required");
+    }
+
+    // Check if userId is a valid number
+    if (isNaN(parseInt(userId))) {
+      throw new Error("Invalid user ID format");
+    }
+
+    // Delete user through ORM
+    const result = await userORM.deleteUser(userId);
+
+    return {
+      success: true,
+      message: result.message,
+      userId: parseInt(userId)
+    };
+  } catch (error) {
+    throw new Error("Error deleting user: " + error.message);
+  }
+}
+
+async function updateUser(userId, updateData) {
+  try {
+    // Validate userId
+    if (!userId) {
+      throw new Error("User ID is required");
+    }
+
+    // Check if userId is a valid number
+    if (isNaN(parseInt(userId))) {
+      throw new Error("Invalid user ID format");
+    }
+
+    // Validate updateData
+    if (!updateData || typeof updateData !== 'object') {
+      throw new Error("Update data is required and must be an object");
+    }
+
+    // Validate that at least one field is provided for update
+    if (Object.keys(updateData).length === 0) {
+      throw new Error("At least one field must be provided for update");
+    }
+
+    // Validate email format if email is being updated
+    if (updateData.email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(updateData.email)) {
+        throw new Error("Invalid email format");
+      }
+    }
+
+    // Validate password strength if password is being updated
+    if (updateData.password) {
+      if (updateData.password.length < 6) {
+        throw new Error("Password must be at least 6 characters long");
+      }
+    }
+
+    // Update user through ORM
+    const updatedUser = await userORM.updateUser(userId, updateData);
+
+    return {
+      success: true,
+      message: "User updated successfully",
+      user: updatedUser
+    };
+  } catch (error) {
+    throw new Error("Error updating user: " + error.message);
+  }
+}
+
 module.exports = {
   authenticateUser,
   registerUser,
+  deleteUser,
+  updateUser,
 };

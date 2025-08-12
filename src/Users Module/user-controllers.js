@@ -32,4 +32,31 @@ userRouter.post("/register", validateRegistration, async (req, res) => {
   }
 });
 
+userRouter.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await userService.deleteUser(id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
+userRouter.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+    const result = await userService.updateUser(id, updateData);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
 module.exports = userRouter;
