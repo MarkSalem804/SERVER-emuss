@@ -115,7 +115,7 @@ async function updateUser(id, updateData) {
 
     // Prepare update data
     const updateFields = {};
-    
+
     // Only update fields that are provided
     if (updateData.email !== undefined) {
       // Check if new email already exists for another user
@@ -131,15 +131,22 @@ async function updateUser(id, updateData) {
     if (updateData.password !== undefined) {
       // Hash the new password
       const saltRounds = 12;
-      updateFields.password = await bcrypt.hash(updateData.password, saltRounds);
+      updateFields.password = await bcrypt.hash(
+        updateData.password,
+        saltRounds
+      );
     }
 
     if (updateData.schoolId !== undefined) {
-      updateFields.schoolId = updateData.schoolId ? parseInt(updateData.schoolId) : null;
+      updateFields.schoolId = updateData.schoolId
+        ? parseInt(updateData.schoolId)
+        : null;
     }
 
     if (updateData.officeId !== undefined) {
-      updateFields.officeId = updateData.officeId ? parseInt(updateData.officeId) : null;
+      updateFields.officeId = updateData.officeId
+        ? parseInt(updateData.officeId)
+        : null;
     }
 
     if (updateData.role !== undefined) {
@@ -151,7 +158,9 @@ async function updateUser(id, updateData) {
     }
 
     if (updateData.positionId !== undefined) {
-      updateFields.positionId = updateData.positionId ? parseInt(updateData.positionId) : null;
+      updateFields.positionId = updateData.positionId
+        ? parseInt(updateData.positionId)
+        : null;
     }
 
     // If no fields to update, return early
@@ -175,6 +184,15 @@ async function updateUser(id, updateData) {
   }
 }
 
+async function getAllUsers() {
+  try {
+    const users = await prisma.users.findMany();
+    return users;
+  } catch (error) {
+    throw new Error("Error getting all users: " + error.message);
+  }
+}
+
 module.exports = {
   findUserByEmail,
   findUserById,
@@ -182,4 +200,5 @@ module.exports = {
   updateLastLogin,
   deleteUser,
   updateUser,
+  getAllUsers,
 };

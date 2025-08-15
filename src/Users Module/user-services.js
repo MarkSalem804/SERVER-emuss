@@ -74,7 +74,7 @@ async function deleteUser(userId) {
     return {
       success: true,
       message: result.message,
-      userId: parseInt(userId)
+      userId: parseInt(userId),
     };
   } catch (error) {
     throw new Error("Error deleting user: " + error.message);
@@ -94,7 +94,7 @@ async function updateUser(userId, updateData) {
     }
 
     // Validate updateData
-    if (!updateData || typeof updateData !== 'object') {
+    if (!updateData || typeof updateData !== "object") {
       throw new Error("Update data is required and must be an object");
     }
 
@@ -124,10 +124,23 @@ async function updateUser(userId, updateData) {
     return {
       success: true,
       message: "User updated successfully",
-      user: updatedUser
+      user: updatedUser,
     };
   } catch (error) {
     throw new Error("Error updating user: " + error.message);
+  }
+}
+
+async function getAllUsers() {
+  try {
+    const users = await userORM.getAllUsers();
+    return {
+      success: true,
+      message: "Users fetched successfully",
+      users: users,
+    };
+  } catch (error) {
+    throw new Error("Error getting all users: " + error.message);
   }
 }
 
@@ -136,4 +149,5 @@ module.exports = {
   registerUser,
   deleteUser,
   updateUser,
+  getAllUsers,
 };
